@@ -1,9 +1,19 @@
 from sqlmodel import SQLModel, Field
-from enum import Enum
+from enum import Enum, IntEnum
 from typing import Optional
+from sqlmodel import Relationship
 
 
-class GemClarity(Enum):
+class Enum(Enum):
+    """Enum."""
+
+    @classmethod
+    def list(cls):
+        """List."""
+        return list(map(lambda x: x.value, cls))
+
+
+class GemClarity(IntEnum):
     """Gem clarity."""
 
     SI = 1
@@ -12,7 +22,7 @@ class GemClarity(Enum):
     FL = 4
 
 
-class GemColor(Enum):
+class GemColor(str, Enum):
     """Gem color."""
 
     D = "D"
@@ -23,7 +33,7 @@ class GemColor(Enum):
     i = "I"
 
 
-class GemType(Enum):
+class GemType(str, Enum):
     """Gem types."""
 
     DIAMOND = "DIAMOND"
@@ -31,23 +41,27 @@ class GemType(Enum):
     RUBY = "RUBY"
 
 
-class GemProperties(Enum):
+class GemProperties(SQLModel, table=True):
     """Gem properties."""
 
-    id: Field(primary_key=True)
+    id: Optional[int] = Field(primary_key=True)
     size: float = 1
     clarity: Optional[GemClarity] = None
     color: Optional[GemColor] = None
+    gems: Optional["Gem"] = Relationship(back_populates="gem_properties")
 
 
 class Gem(SQLModel, table=True):
     """Gem."""
 
-    id: Field(primary_key=True)
+    id: Optional[int] = Field(primary_key=True)
     price: float
     available: bool = True
-    gen_type: GemType = GemType.DIAMOND
+    gem_type: GemType = GemType.DIAMOND
 
-    gem_properties: Optional[int] = Field(
+    gem_properties_id: Optional[int] = Field(
         default=None, foreign_key="gemproperties.id"
+    )
+    gem_properties: Optional[GemProperties] = Relationship(
+        back_populates="gems"
     )
