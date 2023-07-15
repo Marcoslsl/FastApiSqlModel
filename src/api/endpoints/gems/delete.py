@@ -8,7 +8,7 @@ from .models.gems import GemResponse
 router = APIRouter(prefix="/gems")
 
 
-@router.delete("/{id}", status_code=204)
+@router.delete("/{id}", status_code=204, tags=["Gem"])
 def delete(id: int):
     """Delete Gems."""
     repo = GemRepo(Session)

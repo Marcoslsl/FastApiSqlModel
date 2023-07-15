@@ -8,7 +8,7 @@ from .models.gems import GemResponse
 router = APIRouter(prefix="/gems")
 
 
-@router.post("", status_code=201, response_model=GemResponse)
+@router.post("", status_code=201, response_model=GemResponse, tags=["Gem"])
 def create(gem: Gem) -> GemResponse:
     """Create Gems."""
     gem_ = gem.copy()

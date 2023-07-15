@@ -8,7 +8,7 @@ from .models.gems import GemResponse
 router = APIRouter(prefix="/gems")
 
 
-@router.put("/{id}", status_code=200, response_model=GemResponse)
+@router.put("/{id}", status_code=200, response_model=GemResponse, tags=["Gem"])
 def create(id: int, new_gem: Gem) -> GemResponse:
     """Create Gems."""
     repo = GemRepo(Session)
