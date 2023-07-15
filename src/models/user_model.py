@@ -25,9 +25,9 @@ class UserInput(SQLModel):
     is_seller: bool = False
 
     @validator("password2")
-    def senhas_iguais(cls, v, values):
+    def senhas_iguais(cls, password2, values):
         """Validate."""
-        if v == values["password1"]:
-            return v
+        if password2 == values["password"]:
+            return password2
         else:
             raise ValueError("passwords don't match")

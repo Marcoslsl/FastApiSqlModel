@@ -65,3 +65,14 @@ class Gem(SQLModel, table=True):
     gem_properties: Optional[GemProperties] = Relationship(
         back_populates="gems"
     )
+
+
+class GemInputCreat(SQLModel):
+    """Gem input."""
+
+    price: float
+    available: bool = True
+    gem_type: GemType = GemType.DIAMOND
+    gem_properties_id: Optional[int] = Field(
+        default=None, foreign_key="gemproperties.id"
+    )
